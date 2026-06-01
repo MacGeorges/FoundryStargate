@@ -14,11 +14,9 @@ export class StargateActor extends Actor {
     systemData.cardSlots.total = 5 + level;
 
     // Resolve race
-    const raceId = systemData.race.id || "tauri";
-    const raceDef = STARGATE_RACES[raceId] ?? STARGATE_RACES.tauri;
+    const raceId = systemData.race.id || 0;
+    const raceDef = STARGATE_RACES[raceId];
 
-    // GM override takes priority, otherwise use race default
-    //const multiplier = parseFloat(systemData.race.multiplierOverride ?? raceDef.multiplier);
     systemData.race.label = raceDef.label;
     systemData.race.multiplier = raceDef.multiplier;
     systemData.race.tokra = raceDef.tokra;
