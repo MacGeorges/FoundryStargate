@@ -1,68 +1,66 @@
-import { StargateItem } from "../item/item.js";
 import { StargateContest } from "../combat/combat.js";
 
-export class StargateActorSheet extends ActorSheet {
+const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["stargate", "sheet", "actor"],
-      template: "systems/stargate/templates/actor/dossier-sheet.hbs",
-      width: 650,
-      height: 700,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "cards" }]
-    });
-  }
+export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
 
-  getData() {
-    const context = super.getData();
-    const actorData = this.actor;
+  static DEFAULT_OPTIONS = {
+    classes: ["stargate", "sheet", "actor"],
+    position: { width: 650, height: 700 },
+    actions: {
+      engageAction: StargateActorSheet.engageAction,
+      addCard: StargateActorSheet.addCard,
+      editCard: StargateActorSheet.editCard,
+      deleteCard: StargateActorSheet.deleteCard,
+      toggleLock: StargateActorSheet.toggleLock,
+    }
+  };
 
-    context.system = actorData.system;
-    context.flags = actorData.flags;
+  static PARTS = {
+    full: {
+      template: "systems/stargate/templates/actor/dossier-sheet.hbs"
+    }
+  };
 
-    context.abilities = actorData.items.filter(i => i.system.cardType === "ability");
-    context.weapons   = actorData.items.filter(i => i.system.cardType === "weapon");
-    context.objects   = actorData.items.filter(i => i.system.cardType === "object");
-
+  async _prepareContext() {
+    const context = await super._prepareContext();
+    context.actor = this.actor;
+    context.system = this.actor.system;
+    context.abilities = this.actor.items.filter(i => i.system.cardType === "ability");
+    context.weapons   = this.actor.items.filter(i => i.system.cardType === "weapon");
+    context.objects   = this.actor.items.filter(i => i.system.cardType === "object");
+    context.isGM = game.user.isGM;
     return context;
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    // Engage Action button
-    html.find(".engage-action").click(async () => {
-      const result = await StargateContest.engageAction(this.actor);
-      if (result) {
-        await StargateContest.postToChat(result.actor, result.selected, result.multiplier);
-      }
-    });
-
-    if (!this.isEditable) return;
-
-    html.find(".card-add").click(ev => {
-      const type = ev.currentTarget.dataset.type || "ability";
-      Item.create({ name: "New Card", type: "card", system: { cardType: type } }, { parent: this.actor });
-    });
-
-    html.find(".card-edit").click(ev => {
-      const li = ev.currentTarget.closest(".card-entry");
-      const item = this.actor.items.get(li.dataset.itemId);
-      item.sheet.render(true);
-    });
-
-    html.find(".card-delete").click(ev => {
-      const li = ev.currentTarget.closest(".card-entry");
-      const item = this.actor.items.get(li.dataset.itemId);
-      item.delete();
-    });
-
-    if (game.user.isGM) {
-      html.find(".card-lock-toggle").click(ev => {
-        const li = ev.currentTarget.closest(".card-entry");
-        const item = this.actor.items.get(li.dataset.itemId);
-        item.update({ "system.locked": !item.system.locked });
-      });
+  static async engageAction() {
+    const result = await StargateContest.engageAction(this.actor);
+    if (result) {
+      await StargateContest.postToChat(result.actor, result.selected, result.multiplier);
     }
+  }
+
+  static async addCard(event) {
+    const type = event.target.closest("[data-type]")?.dataset.type || "ability";
+    await Item.create({ name: "New Card", type: "card", system: { cardType: type } }, { parent: this.actor });
+  }
+
+  static async editCard(event) {
+    const li = event.target.closest("[data-item-id]");
+    const item = this.actor.items.get(li.dataset.itemId);
+    item.sheet.render(true);
+  }
+
+  static async deleteCard(event) {
+    const li = event.target.closest("[data-item-id]");
+    const item = this.actor.items.get(li.dataset.itemId);
+    await item.delete();
+  }
+
+  static async toggleLock(event) {
+    if (!game.user.isGM) return;
+    const li = event.target.closest("[data-item-id]");
+    const item = this.actor.items.get(li.dataset.itemId);
+    await item.update({ "system.locked": !item.system.locked });
   }
 }

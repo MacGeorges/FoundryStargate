@@ -1,6 +1,5 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
-  <!-- Header -->
   <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
     <div class="header-fields">
@@ -25,7 +24,6 @@
           <input type="number" name="system.race.multiplier" value="{{system.race.multiplier}}" step="0.1" min="0.1" />
         </div>
       </div>
-      <!-- Health -->
       <div class="health-row flexrow">
         <label>HP</label>
         <input type="number" name="system.health.value" value="{{system.health.value}}" />
@@ -35,16 +33,14 @@
     </div>
   </header>
 
-  <!-- Tabs -->
-  <nav class="sheet-tabs tabs">
-    <a class="item" data-tab="cards">Cards</a>
-    <a class="item" data-tab="bio">Biography</a>
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="cards" data-group="primary">Cards</a>
+    <a class="item" data-tab="bio" data-group="primary">Biography</a>
   </nav>
 
   <section class="sheet-body">
 
-    <!-- Cards Tab -->
-    <div class="tab" data-tab="cards">
+    <div class="tab" data-tab="cards" data-group="primary">
 
       <div class="card-slots-info">
         Slots: {{system.cardSlots.total}} &nbsp;|&nbsp; Total Power: {{system.totalCardValue}}
@@ -53,64 +49,59 @@
         {{/if}}
       </div>
 
-      <!-- Abilities -->
+      {{#each (array "abilities" "weapons" "objects") as |section|}}
+      {{! We'll do each section manually below }}
+      {{/each}}
+
       <div class="card-section">
         <div class="card-section-header">
           <h3>Abilities</h3>
-          <a class="card-add" data-type="ability" title="Add Ability">+</a>
+          <a data-action="addCard" data-type="ability" title="Add Ability" style="cursor:pointer">+</a>
         </div>
         {{#each abilities as |card|}}
         <div class="card-entry {{#if card.system.locked}}locked{{/if}}" data-item-id="{{card.id}}">
           <span class="card-name">{{card.name}}</span>
           <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
           <div class="card-controls">
-            {{#if @root.editable}}
-              {{#if isGM}}<a class="card-lock-toggle" title="Toggle Lock">🔒</a>{{/if}}
-              <a class="card-edit" title="Edit">✏️</a>
-              <a class="card-delete" title="Delete">🗑️</a>
-            {{/if}}
+            {{#if @root.isGM}}<a data-action="toggleLock" title="Toggle Lock" style="cursor:pointer">🔒</a>{{/if}}
+            <a data-action="editCard" title="Edit" style="cursor:pointer">✏️</a>
+            <a data-action="deleteCard" title="Delete" style="cursor:pointer">🗑️</a>
           </div>
         </div>
         {{/each}}
       </div>
 
-      <!-- Weapons -->
       <div class="card-section">
         <div class="card-section-header">
           <h3>Weapons</h3>
-          <a class="card-add" data-type="weapon" title="Add Weapon">+</a>
+          <a data-action="addCard" data-type="weapon" title="Add Weapon" style="cursor:pointer">+</a>
         </div>
         {{#each weapons as |card|}}
         <div class="card-entry {{#if card.system.locked}}locked{{/if}}" data-item-id="{{card.id}}">
           <span class="card-name">{{card.name}}</span>
           <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
           <div class="card-controls">
-            {{#if @root.editable}}
-              {{#if isGM}}<a class="card-lock-toggle" title="Toggle Lock">🔒</a>{{/if}}
-              <a class="card-edit" title="Edit">✏️</a>
-              <a class="card-delete" title="Delete">🗑️</a>
-            {{/if}}
+            {{#if @root.isGM}}<a data-action="toggleLock" title="Toggle Lock" style="cursor:pointer">🔒</a>{{/if}}
+            <a data-action="editCard" title="Edit" style="cursor:pointer">✏️</a>
+            <a data-action="deleteCard" title="Delete" style="cursor:pointer">🗑️</a>
           </div>
         </div>
         {{/each}}
       </div>
 
-      <!-- Objects -->
       <div class="card-section">
         <div class="card-section-header">
           <h3>Objects</h3>
-          <a class="card-add" data-type="object" title="Add Object">+</a>
+          <a data-action="addCard" data-type="object" title="Add Object" style="cursor:pointer">+</a>
         </div>
         {{#each objects as |card|}}
         <div class="card-entry {{#if card.system.locked}}locked{{/if}}" data-item-id="{{card.id}}">
           <span class="card-name">{{card.name}}</span>
           <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
           <div class="card-controls">
-            {{#if @root.editable}}
-              {{#if isGM}}<a class="card-lock-toggle" title="Toggle Lock">🔒</a>{{/if}}
-              <a class="card-edit" title="Edit">✏️</a>
-              <a class="card-delete" title="Delete">🗑️</a>
-            {{/if}}
+            {{#if @root.isGM}}<a data-action="toggleLock" title="Toggle Lock" style="cursor:pointer">🔒</a>{{/if}}
+            <a data-action="editCard" title="Edit" style="cursor:pointer">✏️</a>
+            <a data-action="deleteCard" title="Delete" style="cursor:pointer">🗑️</a>
           </div>
         </div>
         {{/each}}
@@ -118,15 +109,14 @@
 
     </div>
 
-    <!-- Biography Tab -->
-    <div class="tab" data-tab="bio">
+    <div class="tab" data-tab="bio" data-group="primary">
       <textarea name="system.biography" placeholder="Character background...">{{system.biography}}</textarea>
     </div>
 
   </section>
-  
+
   <footer class="sheet-footer">
-	<button type="button" class="engage-action">⚔️ Engage Action</button>
+    <button type="button" data-action="engageAction">⚔️ Engage Action</button>
   </footer>
 
 </form>

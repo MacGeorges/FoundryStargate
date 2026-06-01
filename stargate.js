@@ -25,7 +25,6 @@ Hooks.once("init", function () {
   });
 });
 
-// Handle clicks on the "Roll Unexpected Outcome" button in chat
 Hooks.on("renderChatMessage", (message, html) => {
   html.find(".roll-unexpected").click(async ev => {
     const actorId = ev.currentTarget.dataset.actorId;
