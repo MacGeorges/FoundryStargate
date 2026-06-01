@@ -1,3 +1,5 @@
+import { STARGATE_RACES } from "../races.js";
+
 export class StargateContest {
 
   /**

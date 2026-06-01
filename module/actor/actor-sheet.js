@@ -1,5 +1,5 @@
 import { StargateContest } from "../combat/combat.js";
-import { STARGATE_RACES } from "../config.js";
+import { STARGATE_RACES } from "../races.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 

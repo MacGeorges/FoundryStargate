@@ -1,4 +1,4 @@
-import { STARGATE_RACES } from "../config.js";
+import { STARGATE_RACES } from "../races.js";
 
 export class StargateActor extends Actor {
 
