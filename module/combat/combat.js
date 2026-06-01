@@ -8,6 +8,9 @@ export class StargateContest {
     const cards = actor.items.filter(i => i.type === "card");
     const multiplier = system.race.multiplier;
 
+    console.log("Character race multiplier:", multiplier);
+
+
     // Build card list HTML
     const cardRows = cards.map(card => {
       const val = card.system.locked ? card.system.lockedValue : card.system.value;
@@ -94,6 +97,8 @@ export class StargateContest {
       ui.notifications.warn("No cards selected!");
       return;
     }
+
+console.log("Post to chat race multiplier:", multiplier);
 
     const rawTotal = selected.reduce((sum, c) => sum + c.value, 0);
     const finalTotal = Math.floor(rawTotal * multiplier);
