@@ -1,4 +1,5 @@
 import { StargateContest } from "../combat/combat.js";
+import { STARGATE_RACES } from "../config.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -39,22 +40,23 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.objects   = this.actor.items.filter(i => i.system.cardType === "object");
     context.isGM = game.user.isGM;
     context.tabs = this._getTabs();
+    context.races = Object.entries(STARGATE_RACES).map(([id, r]) => ({
+      id,
+      label: r.label,
+      selected: id === this.actor.system.race.id
+    }));
     return context;
   }
 
   _getTabs() {
     return {
       cards: {
-        id: "cards",
-        group: "primary",
-        label: "Cards",
+        id: "cards", group: "primary", label: "Cards",
         active: this.tabGroups.primary === "cards",
         cssClass: this.tabGroups.primary === "cards" ? "active" : ""
       },
       bio: {
-        id: "bio",
-        group: "primary",
-        label: "Biography",
+        id: "bio", group: "primary", label: "Biography",
         active: this.tabGroups.primary === "bio",
         cssClass: this.tabGroups.primary === "bio" ? "active" : ""
       }

@@ -6,7 +6,7 @@ export class StargateContest {
   static async engageAction(actor) {
     const system = actor.system;
     const cards = actor.items.filter(i => i.type === "card");
-    const multiplier = system.race?.multiplier || 1.0;
+    const multiplier = parseFloat(system.race?.multiplier) || 1.0;
 
     // Build card list HTML
     const cardRows = cards.map(card => {
@@ -159,7 +159,7 @@ export class StargateContest {
   static async rollUnexpected(actorId, race) {
     const roll = await new Roll("1d100").evaluate();
     const result = roll.total;
-    const isTokra = race.toLowerCase().includes("tok");
+    const isTokra = actor.system.race?.tokra === true;
 
     let outcome, outcomeClass;
 
