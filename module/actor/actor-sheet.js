@@ -18,7 +18,6 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       editCard: StargateActorSheet.editCard,
       deleteCard: StargateActorSheet.deleteCard,
       toggleLock: StargateActorSheet.toggleLock,
-      changeRace: StargateActorSheet.changeRace,
     }
   };
 
@@ -48,6 +47,14 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       selected: i === Number(this.actor.system.race.id)
     }));
     return context;
+  }
+
+  async _onChangeForm(formConfig, event) {
+    if (event.target.name === "system.race.id") {
+      await this.actor.update({ "system.race.id": Number(event.target.value) });
+      return;
+    }
+    return super._onChangeForm(formConfig, event);
   }
 
   _getTabs() {
@@ -95,11 +102,4 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     const item = this.actor.items.get(li.dataset.itemId);
     await item.update({ "system.locked": !item.system.locked });
   }
-
-  static async changeRace(event) {
-  const select = event.target.closest(".field-group").querySelector("select");
-  const raceId = Number(select.value);
-  console.log("Updating Dossier race:", STARGATE_RACES[raceId].label);
-  await this.actor.update({ "system.race.id": raceId });
-}
 }

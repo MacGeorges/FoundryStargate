@@ -104,7 +104,7 @@ console.log("Post to chat race multiplier:", multiplier);
 
     const rawTotal = selected.reduce((sum, c) => sum + c.value, 0);
     const finalTotal = Math.floor(rawTotal * multiplier);
-    const race = actor.system.race?.name || "Tau'ri";
+    const race = actor.system.race.label;
 
     const cardDetails = selected.map(c =>
       `<li>${c.name}: +${c.value}</li>`
