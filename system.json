@@ -1,0 +1,35 @@
+{
+  "id": "stargate",
+  "title": "Stargate SG-1",
+  "description": "A card-based RPG system set in the Stargate universe.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "authors": [
+    {
+      "name": "MacGeorges"
+    }
+  ],
+  "esmodules": ["stargate.js"],
+  "styles": ["css/stargate.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "card": {}
+    }
+  },
+  "url": "https://github.com/MacGeorges/FoundryStargate",
+  "manifest": "https://raw.githubusercontent.com/MacGeorges/FoundryStargate/main/system.json",
+  "download": "https://github.com/MacGeorges/FoundryStargate/archive/refs/heads/main.zip"
+}
