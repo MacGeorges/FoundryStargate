@@ -28,6 +28,6 @@ export class StargateActor extends Actor {
       const val = card.system.locked ? card.system.lockedValue : card.system.value;
       totalValue += val;
     }
-    systemData.totalCardValue = Math.floor(totalValue * multiplier);
+    systemData.totalCardValue = Math.floor(totalValue * systemData.race.multiplier);
   }
 }
