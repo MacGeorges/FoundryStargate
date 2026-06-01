@@ -98,6 +98,10 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   static async deleteCard(event) {
     const li = event.target.closest("[data-item-id]");
     const item = this.actor.items.get(li.dataset.itemId);
+    if (item.system.locked && !game.user.isGM) {
+      ui.notifications.warn("Locked cards cannot be deleted.");
+      return;
+    }
     await item.delete();
   }
 
@@ -111,9 +115,12 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   }
 
   static async toggleLock(event) {
-    if (!game.user.isGM) return;
     const li = event.target.closest("[data-item-id]");
     const item = this.actor.items.get(li.dataset.itemId);
+    if (item.system.locked && !game.user.isGM) {
+      ui.notifications.warn("Only the GM can unlock a card.");
+      return;
+    }
     await item.update({ "system.locked": !item.system.locked });
   }
 }
