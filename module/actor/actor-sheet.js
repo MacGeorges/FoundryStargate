@@ -1,4 +1,5 @@
 import { StargateItem } from "../item/item.js";
+import { StargateContest } from "../combat/combat.js";
 
 export class StargateActorSheet extends ActorSheet {
 
@@ -19,7 +20,6 @@ export class StargateActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // Separate cards by type for display
     context.abilities = actorData.items.filter(i => i.system.cardType === "ability");
     context.weapons   = actorData.items.filter(i => i.system.cardType === "weapon");
     context.objects   = actorData.items.filter(i => i.system.cardType === "object");
@@ -30,29 +30,33 @@ export class StargateActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
+    // Engage Action button
+    html.find(".engage-action").click(async () => {
+      const result = await StargateContest.engageAction(this.actor);
+      if (result) {
+        await StargateContest.postToChat(result.actor, result.selected, result.multiplier);
+      }
+    });
+
     if (!this.isEditable) return;
 
-    // Add card
     html.find(".card-add").click(ev => {
       const type = ev.currentTarget.dataset.type || "ability";
       Item.create({ name: "New Card", type: "card", system: { cardType: type } }, { parent: this.actor });
     });
 
-    // Edit card
     html.find(".card-edit").click(ev => {
       const li = ev.currentTarget.closest(".card-entry");
       const item = this.actor.items.get(li.dataset.itemId);
       item.sheet.render(true);
     });
 
-    // Delete card
     html.find(".card-delete").click(ev => {
       const li = ev.currentTarget.closest(".card-entry");
       const item = this.actor.items.get(li.dataset.itemId);
       item.delete();
     });
 
-    // Toggle lock (GM only)
     if (game.user.isGM) {
       html.find(".card-lock-toggle").click(ev => {
         const li = ev.currentTarget.closest(".card-entry");
