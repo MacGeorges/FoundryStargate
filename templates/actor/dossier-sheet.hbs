@@ -34,13 +34,13 @@
   </header>
 
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="cards" data-group="primary">Cards</a>
-    <a class="item" data-tab="bio" data-group="primary">Biography</a>
+    <a class="item {{tabs.cards.cssClass}}" data-tab="cards" data-group="primary">Cards</a>
+    <a class="item {{tabs.bio.cssClass}}" data-tab="bio" data-group="primary">Biography</a>
   </nav>
 
   <section class="sheet-body">
 
-    <div class="tab" data-tab="cards" data-group="primary">
+    <div class="tab {{tabs.cards.cssClass}}" data-tab="cards" data-group="primary">
 
       <div class="card-slots-info">
         Slots: {{system.cardSlots.total}} &nbsp;|&nbsp; Total Power: {{system.totalCardValue}}
@@ -105,7 +105,7 @@
 
     </div>
 
-    <div class="tab" data-tab="bio" data-group="primary">
+    <div class="tab {{tabs.bio.cssClass}}" data-tab="bio" data-group="primary">
       <textarea name="system.biography" placeholder="Character background...">{{system.biography}}</textarea>
     </div>
 

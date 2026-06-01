@@ -7,6 +7,9 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   static DEFAULT_OPTIONS = {
     classes: ["stargate", "sheet", "actor"],
     position: { width: 650, height: 700 },
+    form: {
+      submitOnChange: true,
+    },
     actions: {
       engageAction: StargateActorSheet.engageAction,
       addCard: StargateActorSheet.addCard,
@@ -18,8 +21,13 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
 
   static PARTS = {
     full: {
-      template: "systems/stargate/templates/actor/dossier-sheet.hbs"
+      template: "systems/stargate/templates/actor/dossier-sheet.hbs",
+      scrollable: [".sheet-body"]
     }
+  };
+
+  tabGroups = {
+    primary: "cards"
   };
 
   async _prepareContext() {
@@ -30,7 +38,27 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.weapons   = this.actor.items.filter(i => i.system.cardType === "weapon");
     context.objects   = this.actor.items.filter(i => i.system.cardType === "object");
     context.isGM = game.user.isGM;
+    context.tabs = this._getTabs();
     return context;
+  }
+
+  _getTabs() {
+    return {
+      cards: {
+        id: "cards",
+        group: "primary",
+        label: "Cards",
+        active: this.tabGroups.primary === "cards",
+        cssClass: this.tabGroups.primary === "cards" ? "active" : ""
+      },
+      bio: {
+        id: "bio",
+        group: "primary",
+        label: "Biography",
+        active: this.tabGroups.primary === "bio",
+        cssClass: this.tabGroups.primary === "bio" ? "active" : ""
+      }
+    };
   }
 
   static async engageAction() {
