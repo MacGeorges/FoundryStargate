@@ -10,8 +10,8 @@ export class StargateContest {
     const cards = actor.items.filter(i => i.type === "card");
     const multiplier = STARGATE_RACES[system.race.id].multiplier;
 
+    console.log("race.id:", system.race.id);
     console.log("Character race multiplier:", multiplier);
-
 
     // Build card list HTML
     const cardRows = cards.map(card => {

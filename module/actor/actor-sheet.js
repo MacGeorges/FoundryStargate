@@ -43,7 +43,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.races = STARGATE_RACES.map((r, i) => ({
       id: i,
       label: r.label,
-      selected: i === this.actor.system.race.id
+      selected: i === Number(this.actor.system.race.id)
     }));
     return context;
   }
