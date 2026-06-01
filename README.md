@@ -22,7 +22,9 @@ Your race gives you a multiplier that applies to all your actions in combat.
 | Tok'ra | ×1.5 |
 | Goa'uld | ×2.0 |
 
+Jaffa are limited in technology
 Tok'ra characters also risk **Host Refusal** during unexpected outcomes (see below).
+Goa'uld have a reduced card count (level -3)
 
 ---
 
@@ -42,7 +44,7 @@ A level 1 character has 6 slots. A level 3 character has 8 slots, and so on.
 
 ### Locked Cards
 
-The GM can lock a card. A locked card uses a fixed value set by the GM rather than its normal value.
+A locked card have a power of 2 instead of 1, but wil permanently take a slot in your character.
 
 ---
 
