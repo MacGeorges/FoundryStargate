@@ -1,0 +1,127 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+  <!-- Header -->
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
+      </h1>
+      <div class="header-details flexrow">
+        <div class="field-group">
+          <label>Rank</label>
+          <input type="text" name="system.rank" value="{{system.rank}}" placeholder="e.g. Colonel" />
+        </div>
+        <div class="field-group">
+          <label>Level</label>
+          <input type="number" name="system.level" value="{{system.level}}" min="1" />
+        </div>
+        <div class="field-group">
+          <label>Race</label>
+          <input type="text" name="system.race.name" value="{{system.race.name}}" />
+        </div>
+        <div class="field-group">
+          <label>Multiplier</label>
+          <input type="number" name="system.race.multiplier" value="{{system.race.multiplier}}" step="0.1" min="0.1" />
+        </div>
+      </div>
+      <!-- Health -->
+      <div class="health-row flexrow">
+        <label>HP</label>
+        <input type="number" name="system.health.value" value="{{system.health.value}}" />
+        <span>/</span>
+        <input type="number" name="system.health.max" value="{{system.health.max}}" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="sheet-tabs tabs">
+    <a class="item" data-tab="cards">Cards</a>
+    <a class="item" data-tab="bio">Biography</a>
+  </nav>
+
+  <section class="sheet-body">
+
+    <!-- Cards Tab -->
+    <div class="tab" data-tab="cards">
+
+      <div class="card-slots-info">
+        Slots: {{system.cardSlots.total}} &nbsp;|&nbsp; Total Power: {{system.totalCardValue}}
+        {{#if system.race.multiplier}}
+          <span class="multiplier">(×{{system.race.multiplier}})</span>
+        {{/if}}
+      </div>
+
+      <!-- Abilities -->
+      <div class="card-section">
+        <div class="card-section-header">
+          <h3>Abilities</h3>
+          <a class="card-add" data-type="ability" title="Add Ability">+</a>
+        </div>
+        {{#each abilities as |card|}}
+        <div class="card-entry {{#if card.system.locked}}locked{{/if}}" data-item-id="{{card.id}}">
+          <span class="card-name">{{card.name}}</span>
+          <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
+          <div class="card-controls">
+            {{#if @root.editable}}
+              {{#if isGM}}<a class="card-lock-toggle" title="Toggle Lock">🔒</a>{{/if}}
+              <a class="card-edit" title="Edit">✏️</a>
+              <a class="card-delete" title="Delete">🗑️</a>
+            {{/if}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <!-- Weapons -->
+      <div class="card-section">
+        <div class="card-section-header">
+          <h3>Weapons</h3>
+          <a class="card-add" data-type="weapon" title="Add Weapon">+</a>
+        </div>
+        {{#each weapons as |card|}}
+        <div class="card-entry {{#if card.system.locked}}locked{{/if}}" data-item-id="{{card.id}}">
+          <span class="card-name">{{card.name}}</span>
+          <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
+          <div class="card-controls">
+            {{#if @root.editable}}
+              {{#if isGM}}<a class="card-lock-toggle" title="Toggle Lock">🔒</a>{{/if}}
+              <a class="card-edit" title="Edit">✏️</a>
+              <a class="card-delete" title="Delete">🗑️</a>
+            {{/if}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <!-- Objects -->
+      <div class="card-section">
+        <div class="card-section-header">
+          <h3>Objects</h3>
+          <a class="card-add" data-type="object" title="Add Object">+</a>
+        </div>
+        {{#each objects as |card|}}
+        <div class="card-entry {{#if card.system.locked}}locked{{/if}}" data-item-id="{{card.id}}">
+          <span class="card-name">{{card.name}}</span>
+          <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
+          <div class="card-controls">
+            {{#if @root.editable}}
+              {{#if isGM}}<a class="card-lock-toggle" title="Toggle Lock">🔒</a>{{/if}}
+              <a class="card-edit" title="Edit">✏️</a>
+              <a class="card-delete" title="Delete">🗑️</a>
+            {{/if}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+    </div>
+
+    <!-- Biography Tab -->
+    <div class="tab" data-tab="bio">
+      <textarea name="system.biography" placeholder="Character background...">{{system.biography}}</textarea>
+    </div>
+
+  </section>
+</form>

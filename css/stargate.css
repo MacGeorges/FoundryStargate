@@ -1,0 +1,71 @@
+/* Stargate System - base styles */
+.stargate.sheet .sheet-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.stargate.sheet .profile-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #999;
+}
+.stargate.sheet .header-details {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.stargate.sheet .field-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.stargate.sheet .field-group label {
+  font-weight: bold;
+  min-width: 80px;
+}
+.stargate.sheet .health-row {
+  gap: 6px;
+  align-items: center;
+}
+.stargate.sheet .card-slots-info {
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding: 4px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+.stargate.sheet .card-section {
+  margin-bottom: 12px;
+}
+.stargate.sheet .card-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 4px;
+}
+.stargate.sheet .card-section-header h3 {
+  margin: 0;
+}
+.stargate.sheet .card-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+.stargate.sheet .card-entry:hover {
+  background: rgba(0,0,0,0.05);
+}
+.stargate.sheet .card-entry.locked {
+  background: rgba(200,150,0,0.1);
+}
+.stargate.sheet .card-name { flex: 1; }
+.stargate.sheet .card-value { min-width: 30px; text-align: right; font-weight: bold; }
+.stargate.sheet .card-controls { display: flex; gap: 4px; }
+.stargate.sheet .card-controls a { cursor: pointer; }
+.stargate.sheet textarea {
+  width: 100%;
+  height: 150px;
+}

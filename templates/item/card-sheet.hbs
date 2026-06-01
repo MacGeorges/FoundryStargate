@@ -1,0 +1,44 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1><input name="name" type="text" value="{{item.name}}" placeholder="Card Name" /></h1>
+    </div>
+  </header>
+
+  <section class="sheet-body">
+
+    <div class="field-group">
+      <label>Type</label>
+      <select name="system.cardType">
+        {{#each cardTypes as |label key|}}
+          <option value="{{key}}" {{#if (eq ../system.cardType key)}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>Value</label>
+      <input type="number" name="system.value" value="{{system.value}}" min="1" />
+    </div>
+
+    <div class="field-group">
+      <label>Locked Value</label>
+      <input type="number" name="system.lockedValue" value="{{system.lockedValue}}" min="1" />
+      <span class="hint">(counts as this when locked)</span>
+    </div>
+
+    <div class="field-group">
+      <label>Locked</label>
+      <input type="checkbox" name="system.locked" {{#if system.locked}}checked{{/if}} {{#unless isGM}}disabled{{/unless}} />
+      <span class="hint">Only GM can change</span>
+    </div>
+
+    <div class="field-group">
+      <label>Description</label>
+      <textarea name="system.description" placeholder="Card description...">{{system.description}}</textarea>
+    </div>
+
+  </section>
+</form>
