@@ -18,9 +18,9 @@ export class StargateActor extends Actor {
     const raceDef = STARGATE_RACES[raceId] ?? STARGATE_RACES.tauri;
 
     // GM override takes priority, otherwise use race default
-    const multiplier = parseFloat(systemData.race.multiplierOverride ?? raceDef.multiplier);
+    //const multiplier = parseFloat(systemData.race.multiplierOverride ?? raceDef.multiplier);
     systemData.race.label = raceDef.label;
-    systemData.race.multiplier = multiplier;
+    systemData.race.multiplier = raceDef.multiplier;
     systemData.race.tokra = raceDef.tokra;
 
     // Calculate total card value

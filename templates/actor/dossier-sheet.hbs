@@ -24,7 +24,7 @@
 		  </select>
 		</div>
 		<div class="field-group">
-		  <label>Multiplier</label>
+		  <label>Race</label>
 		  {{#if isGM}}
 			<input type="number" name="system.race.multiplierOverride"
 			  value="{{system.race.multiplier}}" step="0.1" min="0.1" />
@@ -32,10 +32,6 @@
 		  {{else}}
 			<span class="multiplier-display">×{{system.race.multiplier}}</span>
 		  {{/if}}
-        </div>
-        <div class="field-group">
-          <label>Multiplier</label>
-          <input type="number" name="system.race.multiplier" value="{{system.race.multiplier}}" step="0.1" min="0.1" />
         </div>
       </div>
       <div class="health-row flexrow">
