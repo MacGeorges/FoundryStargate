@@ -17,7 +17,7 @@
         </div>
         <div class="field-group">
           <label>Race</label>
-          <select name="system.race.id">
+          <select name="system.race.id" data-dtype="Number">
           {{#each races as |race|}}
             <option value="{{race.id}}" {{#if race.selected}}selected{{/if}}>{{race.label}}</option>
           {{/each}}

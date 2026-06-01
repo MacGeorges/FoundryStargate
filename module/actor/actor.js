@@ -19,7 +19,10 @@ export class StargateActor extends Actor {
 
     systemData.race.label = raceDef.label;
     systemData.race.multiplier = raceDef.multiplier;
-    systemData.race.tokra = raceDef.tokra;
+    systemData.race.isTokra = raceDef.isTokra;
+
+    console.log("Dossier race:", systemData.race.label);
+    console.log("Dossier race multiplier:", systemData.race.multiplier);
 
     // Calculate total card value
     const cards = this.items.filter(i => i.type === "card");
