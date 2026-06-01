@@ -8,6 +8,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   static DEFAULT_OPTIONS = {
     classes: ["stargate", "sheet", "actor"],
     position: { width: 650, height: 700 },
+    resizable: true,
     form: {
       submitOnChange: true,
     },

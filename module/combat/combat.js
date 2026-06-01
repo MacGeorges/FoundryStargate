@@ -110,9 +110,7 @@ console.log("Post to chat race multiplier:", multiplier);
       `<li>${c.name}: +${c.value}</li>`
     ).join("");
 
-    const multiplierLine = multiplier !== 1.0
-      ? `<div class="engage-detail">Race multiplier (${race}): ×${multiplier}</div>`
-      : "";
+    const multiplierLine = `<div class="engage-detail">Race multiplier (${race}): ×${multiplier}</div>`;
 
     const messageContent = `
       <div class="stargate-chat-action">
