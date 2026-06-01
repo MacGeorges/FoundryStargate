@@ -6,7 +6,7 @@ export class StargateContest {
   static async engageAction(actor) {
     const system = actor.system;
     const cards = actor.items.filter(i => i.type === "card");
-    const multiplier = parseFloat(system.race?.multiplier) || 1.0;
+    const multiplier = actor.race.multiplier;
 
     // Build card list HTML
     const cardRows = cards.map(card => {
