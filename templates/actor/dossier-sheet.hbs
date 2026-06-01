@@ -15,23 +15,13 @@
           <label>Level</label>
           <input type="number" name="system.level" value="{{system.level}}" min="1" />
         </div>
-		<div class="field-group">
-		  <label>Race</label>
-		  <select name="system.race.id">
-			{{#each races as |race|}}
-			  <option value="{{race.id}}" {{#if race.selected}}selected{{/if}}>{{race.label}}</option>
-			{{/each}}
-		  </select>
-		</div>
-		<div class="field-group">
-		  <label>Race</label>
-		  {{#if isGM}}
-			<input type="number" name="system.race.multiplierOverride"
-			  value="{{system.race.multiplier}}" step="0.1" min="0.1" />
-			<span class="hint">(GM override)</span>
-		  {{else}}
-			<span class="multiplier-display">×{{system.race.multiplier}}</span>
-		  {{/if}}
+        <div class="field-group">
+          <label>Race</label>
+          <select name="system.race.id">
+          {{#each races as |race|}}
+            <option value="{{race.id}}" {{#if race.selected}}selected{{/if}}>{{race.label}}</option>
+          {{/each}}
+          </select>
         </div>
       </div>
       <div class="health-row flexrow">
