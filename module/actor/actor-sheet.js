@@ -39,6 +39,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.abilities = this.actor.items.filter(i => i.system.cardType === "ability");
     context.weapons   = this.actor.items.filter(i => i.system.cardType === "weapon");
     context.objects   = this.actor.items.filter(i => i.system.cardType === "object");
+    context.cardCount = this.actor.items.filter(i => i.type === "card").length;
     context.isGM = game.user.isGM;
     context.tabs = this._getTabs();
     context.races = STARGATE_RACES.map((r, i) => ({

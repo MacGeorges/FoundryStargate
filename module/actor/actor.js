@@ -11,15 +11,15 @@ export class StargateActor extends Actor {
 
   _prepareCharacterData(systemData) {
     const level = systemData.level || 1;
-    systemData.cardSlots.total = 5 + level;
 
     // Resolve race
     const raceId = systemData.race.id || 0;
     const raceDef = STARGATE_RACES[raceId];
 
+    systemData.cardSlots.total = raceId === 3 ? level - 3 : 5 + level;
+
     systemData.race.label = raceDef.label;
     systemData.race.multiplier = raceDef.multiplier;
-    systemData.race.isTokra = raceDef.isTokra;
 
     console.log("Dossier race:", systemData.race.label);
     console.log("Dossier race multiplier:", systemData.race.multiplier);

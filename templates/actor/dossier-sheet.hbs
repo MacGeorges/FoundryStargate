@@ -43,7 +43,7 @@
     <div class="tab {{tabs.cards.cssClass}}" data-tab="cards" data-group="primary">
 
       <div class="card-slots-info">
-        Slots: {{system.cardSlots.total}} &nbsp;|&nbsp; Total Power: {{system.totalCardValue}}
+        Slots: {{cardCount}} / {{system.cardSlots.total}}
         {{#if system.race.multiplier}}
           <span class="multiplier">(×{{system.race.multiplier}})</span>
         {{/if}}
