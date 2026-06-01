@@ -80,6 +80,11 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   }
 
   static async addCard(event) {
+    const cards = this.actor.items.filter(i => i.type === "card");
+    if (cards.length >= this.actor.system.cardSlots.total) {
+      ui.notifications.warn("No card slots remaining.");
+      return;
+    }
     const type = event.target.closest("[data-type]")?.dataset.type || "ability";
     await Item.create({ name: "New Card", type: "card", system: { cardType: type } }, { parent: this.actor });
   }
@@ -94,6 +99,15 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     const li = event.target.closest("[data-item-id]");
     const item = this.actor.items.get(li.dataset.itemId);
     await item.delete();
+  }
+
+  async _onDropItem(event, data) {
+    const cards = this.actor.items.filter(i => i.type === "card");
+    if (cards.length >= this.actor.system.cardSlots.total) {
+      ui.notifications.warn("No card slots remaining.");
+      return;
+    }
+    return super._onDropItem(event, data);
   }
 
   static async toggleLock(event) {
