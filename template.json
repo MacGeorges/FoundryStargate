@@ -1,0 +1,33 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "character": {
+      "biography": "",
+      "rank": "",
+      "level": 1,
+      "health": {
+        "value": 10,
+        "min": 0,
+        "max": 10
+      },
+      "race": {
+        "name": "Tau'ri",
+        "multiplier": 1.0
+      },
+      "cardSlots": {
+        "total": 6,
+        "unlocked": 6
+      }
+    }
+  },
+  "Item": {
+    "types": ["card"],
+    "card": {
+      "description": "",
+      "cardType": "ability",
+      "value": 1,
+      "locked": false,
+      "lockedValue": 2
+    }
+  }
+}
