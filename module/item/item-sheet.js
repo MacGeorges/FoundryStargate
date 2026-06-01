@@ -1,3 +1,5 @@
+import { STARGATE_RACES } from "../races.js";
+
 export class StargateItemSheet extends ItemSheet {
 
   static get defaultOptions() {
@@ -17,6 +19,12 @@ export class StargateItemSheet extends ItemSheet {
       weapon: "Weapon",
       object: "Object"
     };
+    context.isGM = game.user.isGM;
+    context.races = STARGATE_RACES.map((r, i) => ({
+      id: i,
+      label: r.label,
+      allowed: context.system.allowedRaces?.[i] ?? true
+    }));
     return context;
   }
 

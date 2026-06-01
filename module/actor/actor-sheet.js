@@ -112,6 +112,15 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       ui.notifications.warn("No card slots remaining.");
       return;
     }
+    const item = await Item.fromDropData(data);
+    const allowedRaces = item?.system?.allowedRaces;
+    if (allowedRaces) {
+      const raceId = this.actor.system.race.id ?? 0;
+      if (!allowedRaces[raceId]) {
+        ui.notifications.warn(`Your race cannot use this card.`);
+        return;
+      }
+    }
     return super._onDropItem(event, data);
   }
 

@@ -36,6 +36,18 @@
     </div>
 
     <div class="field-group">
+      <label>Available to</label>
+      <div class="race-checkboxes">
+        {{#each races as |race|}}
+          <label class="race-checkbox">
+            <input type="checkbox" name="system.allowedRaces.{{race.id}}" {{#if race.allowed}}checked{{/if}} {{#unless @root.isGM}}disabled{{/unless}} />
+            {{race.label}}
+          </label>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="field-group">
       <label>Description</label>
       <textarea name="system.description" placeholder="Card description...">{{system.description}}</textarea>
     </div>

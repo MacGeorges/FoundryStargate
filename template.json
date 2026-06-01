@@ -26,7 +26,8 @@
       "cardType": "ability",
       "value": 1,
       "locked": false,
-      "lockedValue": 2
+      "lockedValue": 2,
+      "allowedRaces": [true, true, true, true]
     }
   }
 }
