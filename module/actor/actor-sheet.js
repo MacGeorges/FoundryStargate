@@ -40,10 +40,10 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.objects   = this.actor.items.filter(i => i.system.cardType === "object");
     context.isGM = game.user.isGM;
     context.tabs = this._getTabs();
-    context.races = Object.entries(STARGATE_RACES).map(([id, r]) => ({
-      id,
+    context.races = STARGATE_RACES.map((r, i) => ({
+      id: i,
       label: r.label,
-      selected: id === this.actor.system.race.id
+      selected: i === this.actor.system.race.id
     }));
     return context;
   }

@@ -6,7 +6,7 @@ export class StargateContest {
   static async engageAction(actor) {
     const system = actor.system;
     const cards = actor.items.filter(i => i.type === "card");
-    const multiplier = system.race.multiplier;
+    const multiplier = STARGATE_RACES[system.race.id].multiplier;
 
     console.log("Character race multiplier:", multiplier);
 

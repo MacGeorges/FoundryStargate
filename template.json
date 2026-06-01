@@ -11,8 +11,7 @@
         "max": 10
       },
       "race": {
-        "name": "Tau'ri",
-        "multiplierOverride": null
+        "id": 0
       },
       "cardSlots": {
         "total": 6,
