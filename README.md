@@ -22,9 +22,9 @@ Your race gives you a multiplier that applies to all your actions in combat.
 | Tok'ra | ×1.5 |
 | Goa'uld | ×2.0 |
 
-Jaffa are limited in technology
-Tok'ra characters also risk **Host Refusal** during unexpected outcomes (see below).
-Goa'uld have a reduced card count (level -3)
+- Jaffa are limited in technology
+- Tok'ra characters risk **Host Refusal** during unexpected outcomes (see below).
+- Goa'uld have a reduced card count (level -3)
 
 ---
 
