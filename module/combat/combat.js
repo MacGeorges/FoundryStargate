@@ -166,7 +166,9 @@ console.log("Post to chat race multiplier:", multiplier);
   static async rollUnexpected(actorId, race) {
     const roll = await new Roll("1d100").evaluate();
     const result = roll.total;
-    const isTokra = race.id == 1;
+    const isTokra = race === "Tok'ra";
+
+    console.log("Combat, is Tok'ra? ", isTokra);
 
     let outcome, outcomeClass;
 

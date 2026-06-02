@@ -43,7 +43,6 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.bonuses   = this.actor.items.filter(i => i.system.cardType === "bonus");
     context.cardCount = this.actor.items.filter(i => i.type === "card" && i.system.cardType !== "bonus").length;
     context.isGM = game.user.isGM;
-    context.tabs = this._getTabs();
     context.races = STARGATE_RACES.map((r, i) => ({
       id: i,
       label: r.label,
@@ -80,20 +79,6 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       await this.actor.update({ "system.race.id": Number(event.target.value) });
   }
 
-  _getTabs() {
-    return {
-      cards: {
-        id: "cards", group: "primary", label: "Cards",
-        active: this.tabGroups.primary === "cards",
-        cssClass: this.tabGroups.primary === "cards" ? "active" : ""
-      },
-      bio: {
-        id: "bio", group: "primary", label: "Biography",
-        active: this.tabGroups.primary === "bio",
-        cssClass: this.tabGroups.primary === "bio" ? "active" : ""
-      }
-    };
-  }
 
   static async engageAction() {
     const result = await StargateContest.engageAction(this.actor);
