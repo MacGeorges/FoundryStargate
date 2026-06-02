@@ -11,8 +11,10 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     resizable: true,
     form: {
       submitOnChange: true,
+      handler: StargateActorSheet.onSubmitForm
     },
     actions: {
+      changeImage: StargateActorSheet.changeImage,
       engageAction: StargateActorSheet.engageAction,
       addCard: StargateActorSheet.addCard,
       editCard: StargateActorSheet.editCard,
@@ -51,14 +53,21 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     return context;
   }
 
-  _prepareSubmitData(event, form, formData) {
-    const data = formData.object;
-    console.log("[Stargate] _prepareSubmitData called, data:", data);
-    if (!game.user.isGM) delete data["system.race.id"];
-    else if (data["system.race.id"] !== undefined) {
-      data["system.race.id"] = Number(data["system.race.id"]);
-    }
-    return data;
+  static async changeImage() {
+    const fp = new FilePicker({
+      type: "image",
+      current: this.actor.img,
+      callback: async (path) => {
+        await this.actor.update({ img: path });
+      }
+    });
+    fp.browse();
+  }
+
+  static async onSubmitForm(event, form, formData) {
+    const data = new FormDataExtended(form).object;
+    console.log("[Stargate] onSubmitForm called, data:", data);
+    await this.document.update(data);
   }
 
   _getTabs() {

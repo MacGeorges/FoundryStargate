@@ -25,6 +25,12 @@ Hooks.once("init", function () {
   });
 });
 
+Hooks.on("preUpdateActor", (actor, data) => {
+  if (data.system?.race?.id !== undefined) {
+    data.system.race.id = Number(data.system.race.id);
+  }
+});
+
 Hooks.on("renderChatMessage", (message, html) => {
   html.find(".roll-unexpected").click(async ev => {
     const actorId = ev.currentTarget.dataset.actorId;
