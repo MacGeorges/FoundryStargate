@@ -17,7 +17,8 @@ export class StargateItemSheet extends ItemSheet {
     context.cardTypes = {
       ability: "Ability",
       weapon: "Weapon",
-      object: "Object"
+      object: "Object",
+      bonus: "Bonus / Malus"
     };
     context.isGM = game.user.isGM;
     context.races = STARGATE_RACES.map((r, i) => ({

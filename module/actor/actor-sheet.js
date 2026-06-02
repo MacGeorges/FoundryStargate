@@ -39,7 +39,8 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     context.abilities = this.actor.items.filter(i => i.system.cardType === "ability");
     context.weapons   = this.actor.items.filter(i => i.system.cardType === "weapon");
     context.objects   = this.actor.items.filter(i => i.system.cardType === "object");
-    context.cardCount = this.actor.items.filter(i => i.type === "card").length;
+    context.bonuses   = this.actor.items.filter(i => i.system.cardType === "bonus");
+    context.cardCount = this.actor.items.filter(i => i.type === "card" && i.system.cardType !== "bonus").length;
     context.isGM = game.user.isGM;
     context.tabs = this._getTabs();
     context.races = STARGATE_RACES.map((r, i) => ({
@@ -51,11 +52,11 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   }
 
   async _onChangeForm(formConfig, event) {
-    if (event.target.name === "system.race.id") {
-      await this.actor.update({ "system.race.id": Number(event.target.value) });
-      return;
-    }
-    return super._onChangeForm(formConfig, event);
+    const formData = new FormDataExtended(this.element);
+    const data = formData.object;
+    if (!game.user.isGM) delete data["system.race.id"];
+    else data["system.race.id"] = Number(data["system.race.id"]);
+    await this.actor.update(data);
   }
 
   _getTabs() {
@@ -81,12 +82,14 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   }
 
   static async addCard(event) {
-    const cards = this.actor.items.filter(i => i.type === "card");
-    if (cards.length >= this.actor.system.cardSlots.total) {
-      ui.notifications.warn("No card slots remaining.");
-      return;
-    }
     const type = event.target.closest("[data-type]")?.dataset.type || "ability";
+    if (type !== "bonus") {
+      const cards = this.actor.items.filter(i => i.type === "card" && i.system.cardType !== "bonus");
+      if (cards.length >= this.actor.system.cardSlots.total) {
+        ui.notifications.warn("No card slots remaining.");
+        return;
+      }
+    }
     await Item.create({ name: "New Card", type: "card", system: { cardType: type } }, { parent: this.actor });
   }
 
@@ -107,18 +110,20 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   }
 
   async _onDropItem(event, data) {
-    const cards = this.actor.items.filter(i => i.type === "card");
-    if (cards.length >= this.actor.system.cardSlots.total) {
-      ui.notifications.warn("No card slots remaining.");
-      return;
-    }
     const item = await Item.fromDropData(data);
-    const allowedRaces = item?.system?.allowedRaces;
-    if (allowedRaces) {
-      const raceId = this.actor.system.race.id ?? 0;
-      if (!allowedRaces[raceId]) {
-        ui.notifications.warn(`Your race cannot use this card.`);
+    if (item?.system?.cardType !== "bonus") {
+      const cards = this.actor.items.filter(i => i.type === "card" && i.system.cardType !== "bonus");
+      if (cards.length >= this.actor.system.cardSlots.total) {
+        ui.notifications.warn("No card slots remaining.");
         return;
+      }
+      const allowedRaces = item?.system?.allowedRaces;
+      if (allowedRaces) {
+        const raceId = this.actor.system.race.id ?? 0;
+        if (!allowedRaces[raceId]) {
+          ui.notifications.warn(`Your race cannot use this card.`);
+          return;
+        }
       }
     }
     return super._onDropItem(event, data);

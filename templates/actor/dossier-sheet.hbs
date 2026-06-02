@@ -17,7 +17,7 @@
         </div>
         <div class="field-group">
           <label>Race</label>
-          <select name="system.race.id" data-dtype="Number">
+          <select name="system.race.id" data-dtype="Number" {{#unless @root.isGM}}disabled{{/unless}}>
           {{#each races as |race|}}
             <option value="{{race.id}}" {{#if race.selected}}selected{{/if}}>{{race.label}}</option>
           {{/each}}
@@ -96,6 +96,23 @@
           <span class="card-value">{{card.system.value}}{{#if card.system.locked}} 🔒{{/if}}</span>
           <div class="card-controls">
             <a data-action="toggleLock" title="Toggle Lock" style="cursor:pointer">{{#if card.system.locked}}🔒{{else}}🔓{{/if}}</a>
+            <a data-action="editCard" title="Edit" style="cursor:pointer">✏️</a>
+            <a data-action="deleteCard" title="Delete" style="cursor:pointer">🗑️</a>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="card-section bonuses-section">
+        <div class="card-section-header">
+          <h3>Bonuses &amp; Maluses</h3>
+          <a data-action="addCard" data-type="bonus" title="Add Bonus/Malus" style="cursor:pointer">+</a>
+        </div>
+        {{#each bonuses as |card|}}
+        <div class="card-entry bonus-entry" data-item-id="{{card.id}}">
+          <span class="card-name">{{card.name}}</span>
+          <span class="card-value">{{card.system.value}}</span>
+          <div class="card-controls">
             <a data-action="editCard" title="Edit" style="cursor:pointer">✏️</a>
             <a data-action="deleteCard" title="Delete" style="cursor:pointer">🗑️</a>
           </div>

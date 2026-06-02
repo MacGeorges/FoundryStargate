@@ -15,14 +15,16 @@ export class StargateContest {
 
     // Build card list HTML
     const cardRows = cards.map(card => {
+      const isBonus = card.system.cardType === "bonus";
       const val = card.system.locked ? card.system.lockedValue : card.system.value;
       return `
         <div class="engage-card-row">
-          <input type="checkbox" class="card-checkbox" 
-            data-id="${card.id}" data-value="${val}" data-name="${card.name}" />
-          <label>${card.name} 
+          <input type="checkbox" class="card-checkbox"
+            data-id="${card.id}" data-value="${val}" data-name="${card.name}"
+            ${isBonus ? "checked" : ""} />
+          <label>${card.name}
             <span class="card-type">[${card.system.cardType}]</span>
-            <span class="card-val">+${val}${card.system.locked ? " 🔒" : ""}</span>
+            <span class="card-val">${val >= 0 ? "+" : ""}${val}${card.system.locked ? " 🔒" : ""}</span>
           </label>
         </div>
       `;
