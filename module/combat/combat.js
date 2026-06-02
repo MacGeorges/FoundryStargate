@@ -168,8 +168,6 @@ console.log("Post to chat race multiplier:", multiplier);
     const result = roll.total;
     const isTokra = race === "Tok'ra";
 
-    console.log("Combat, is Tok'ra? ", isTokra);
-
     let outcome, outcomeClass;
 
     if (result <= 5) {
