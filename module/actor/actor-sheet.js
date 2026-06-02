@@ -11,7 +11,6 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     resizable: true,
     form: {
       submitOnChange: true,
-      handler: StargateActorSheet.onSubmitForm
     },
     actions: {
       changeImage: StargateActorSheet.changeImage,
@@ -64,15 +63,21 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     fp.browse();
   }
 
-  static async onSubmitForm(event, form, formData) {
-    const data = {};
-    for (const el of form.elements) {
-      if (!el.name || el.disabled) continue;
-      if (el.type === "number")   data[el.name] = Number(el.value);
-      else if (el.type === "checkbox") data[el.name] = el.checked;
-      else data[el.name] = el.value;
-    }
-    await this.document.update(data);
+  async _onChangeForm(formConfig, event) {
+    if (event.target.name === "name")
+      await this.actor.update({ name: event.target.value });
+    else if (event.target.name === "system.rank")
+      await this.actor.update({ "system.rank": event.target.value });
+    else if (event.target.name === "system.level")
+      await this.actor.update({ "system.level": Number(event.target.value) });
+    else if (event.target.name === "system.health.value")
+      await this.actor.update({ "system.health.value": Number(event.target.value) });
+    else if (event.target.name === "system.health.max")
+      await this.actor.update({ "system.health.max": Number(event.target.value) });
+    else if (event.target.name === "system.biography")
+      await this.actor.update({ "system.biography": event.target.value });
+    else if (event.target.name === "system.race.id" && game.user.isGM)
+      await this.actor.update({ "system.race.id": Number(event.target.value) });
   }
 
   _getTabs() {
