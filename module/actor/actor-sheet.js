@@ -11,7 +11,6 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     resizable: true,
     form: {
       submitOnChange: true,
-      handler: StargateActorSheet.onSubmitForm
     },
     actions: {
       changeImage: StargateActorSheet.changeImage,
@@ -62,16 +61,6 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       }
     });
     fp.browse();
-  }
-
-  static async onSubmitForm(event, form, formData) {
-    console.log("[Stargate] form element:", form);
-    console.log("[Stargate] form inputs:", [...form.elements].map(e => `${e.name}=${e.value}`));
-    console.log("[Stargate] formData param:", formData);
-    console.log("[Stargate] formData.object:", formData?.object);
-    const data = new foundry.applications.ux.FormDataExtended(form).object;
-    console.log("[Stargate] constructed data:", data);
-    await this.document.update(data);
   }
 
   _getTabs() {
