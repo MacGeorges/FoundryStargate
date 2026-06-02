@@ -11,6 +11,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     resizable: true,
     form: {
       submitOnChange: true,
+      handler: StargateActorSheet.onSubmitForm
     },
     actions: {
       changeImage: StargateActorSheet.changeImage,
@@ -61,6 +62,17 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       }
     });
     fp.browse();
+  }
+
+  static async onSubmitForm(event, form, formData) {
+    const data = {};
+    for (const el of form.elements) {
+      if (!el.name || el.disabled) continue;
+      if (el.type === "number")   data[el.name] = Number(el.value);
+      else if (el.type === "checkbox") data[el.name] = el.checked;
+      else data[el.name] = el.value;
+    }
+    await this.document.update(data);
   }
 
   _getTabs() {

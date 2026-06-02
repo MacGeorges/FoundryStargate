@@ -1,6 +1,6 @@
 import { STARGATE_RACES } from "../races.js";
 
-export class StargateItemSheet extends ItemSheet {
+export class StargateItemSheet extends foundry.appv1.sheets.ItemSheet {
 
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
