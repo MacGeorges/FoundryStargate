@@ -51,12 +51,15 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     return context;
   }
 
-  async _onChangeForm(formConfig, event) {
-    const formData = new FormDataExtended(this.element);
-    const data = formData.object;
-    if (!game.user.isGM) delete data["system.race.id"];
-    else data["system.race.id"] = Number(data["system.race.id"]);
-    await this.actor.update(data);
+  _prepareSubmitData(event, form, formData) {
+    console.log("[Stargate] _prepareSubmitData called");
+    const data = super._prepareSubmitData(event, form, formData);
+    console.log("[Stargate] submit data:", data);
+    if (data["system.race.id"] !== undefined) {
+      if (!game.user.isGM) delete data["system.race.id"];
+      else data["system.race.id"] = Number(data["system.race.id"]);
+    }
+    return data;
   }
 
   _getTabs() {
