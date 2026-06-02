@@ -14,6 +14,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
     },
     actions: {
       changeImage: StargateActorSheet.changeImage,
+      switchTab: StargateActorSheet.switchTab,
       engageAction: StargateActorSheet.engageAction,
       addCard: StargateActorSheet.addCard,
       editCard: StargateActorSheet.editCard,
@@ -49,6 +50,17 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       selected: i === Number(this.actor.system.race.id)
     }));
     return context;
+  }
+
+  static switchTab(event) {
+    const tab = event.currentTarget.dataset.tab;
+    console.log("[Stargate] switchTab called, tab:", tab);
+    this.tabGroups.primary = tab;
+    const navItems = this.element.querySelectorAll(".tabs .item");
+    const tabDivs = this.element.querySelectorAll(".tab[data-group='primary']");
+    console.log("[Stargate] nav items found:", navItems.length, "tab divs found:", tabDivs.length);
+    navItems.forEach(el => el.classList.toggle("active", el.dataset.tab === tab));
+    tabDivs.forEach(el => el.classList.toggle("active", el.dataset.tab === tab));
   }
 
   static async changeImage() {
