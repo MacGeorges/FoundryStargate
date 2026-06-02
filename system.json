@@ -2,7 +2,7 @@
   "id": "stargate",
   "title": "Stargate SG-1",
   "description": "A card-based RPG system set in the Stargate universe.",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "compatibility": {
     "minimum": "13",
     "verified": "13"

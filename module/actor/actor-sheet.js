@@ -53,7 +53,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   }
 
   static switchTab(event) {
-    const tab = event.currentTarget.dataset.tab;
+    const tab = event.target.closest("[data-tab]")?.dataset.tab;
     console.log("[Stargate] switchTab called, tab:", tab);
     this.tabGroups.primary = tab;
     const navItems = this.element.querySelectorAll(".tabs .item");
