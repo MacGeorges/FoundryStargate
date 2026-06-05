@@ -16,6 +16,10 @@
           <input type="number" name="system.level" value="{{system.level}}" min="1" />
         </div>
         <div class="field-group">
+          <label>SG</label>
+          <input type="number" name="system.sg" value="{{system.sg}}" min="1" />
+        </div>
+        <div class="field-group">
           <label>Race</label>
           <select name="system.race.id" data-dtype="Number" {{#unless @root.isGM}}disabled{{/unless}}>
           {{#each races as |race|}}

@@ -7,6 +7,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     return {
       biography: new fields.StringField({ initial: "" }),
       rank:      new fields.StringField({ initial: "" }),
+      sg:        new fields.NumberField({ initial: 1, integer: true, min: 1 }),
       level:     new fields.NumberField({ initial: 1, integer: true, min: 1 }),
       health: new fields.SchemaField({
         value: new fields.NumberField({ initial: 10, integer: true }),

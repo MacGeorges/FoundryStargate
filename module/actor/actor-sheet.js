@@ -81,6 +81,8 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       await this.actor.update({ "system.rank": event.target.value });
     else if (event.target.name === "system.level")
       await this.actor.update({ "system.level": Number(event.target.value) });
+    else if (event.target.name === "system.sg")
+      await this.actor.update({ "system.sg": Number(event.target.value) });
     else if (event.target.name === "system.health.value")
       await this.actor.update({ "system.health.value": Number(event.target.value) });
     else if (event.target.name === "system.health.max")
