@@ -94,9 +94,9 @@ export class StargateContest {
               const tempModifiers = [];
               html.find(".temp-row").each((_, row) => {
                 const $row = $(row);
-                const sign  = parseInt($row.find(".temp-value").data("sign"));
-                const val   = (parseInt($row.find(".temp-value").val()) || 0) * sign;
-                const name  = $row.find(".temp-name").val().trim() || (sign > 0 ? "Bonus" : "Malus");
+                const sign = parseInt($row.data("sign"));
+                const val  = Math.abs(parseInt($row.find(".temp-value").val()) || 0) * sign;
+                const name = $row.find(".temp-name").val().trim() || (sign > 0 ? "Bonus" : "Malus");
                 if (val !== 0) tempModifiers.push({ name, value: val });
               });
               resolve({ selected, multiplier, actor, tempModifiers });
@@ -112,7 +112,8 @@ export class StargateContest {
             let raw = 0;
             html.find(".card-checkbox:checked").each((_, el) => { raw += parseInt(el.dataset.value); });
             html.find(".temp-value").each((_, el) => {
-              raw += (parseInt(el.value) || 0) * parseInt(el.dataset.sign);
+              const sign = parseInt($(el).closest(".temp-row").data("sign"));
+              raw += Math.abs(parseInt(el.value) || 0) * sign;
             });
             html.find("#engage-total").text(raw);
             html.find("#engage-final").text(Math.floor(raw * multiplier));
@@ -121,8 +122,8 @@ export class StargateContest {
           html.find(".card-checkbox").on("change", recalc);
 
           const makeRow = (sign) => `
-            <div class="temp-row">
-              <input type="number" class="temp-value" data-sign="${sign}" value="1" min="1" />
+            <div class="temp-row" data-sign="${sign}">
+              <input type="number" class="temp-value" value="${sign > 0 ? 1 : -1}" />
               <input type="text" class="temp-name" placeholder="${sign > 0 ? "Bonus name" : "Malus name"}" />
               <a class="remove-temp">✕</a>
             </div>`;
