@@ -36,6 +36,20 @@ export class StargateContest {
         <div class="engage-card-list">
           ${cardRows.length ? cardRows : "<p><em>No cards in inventory.</em></p>"}
         </div>
+        <div class="temp-section">
+          <div class="temp-section-header">
+            <span>Temporary Bonuses</span>
+            <a id="add-bonus" title="Add bonus" style="cursor:pointer;">+</a>
+          </div>
+          <div id="temp-bonus-list"></div>
+        </div>
+        <div class="temp-section">
+          <div class="temp-section-header">
+            <span>Temporary Maluses</span>
+            <a id="add-malus" title="Add malus" style="cursor:pointer;">+</a>
+          </div>
+          <div id="temp-malus-list"></div>
+        </div>
         <div class="engage-total">
           Total: <strong><span id="engage-total">0</span></strong>
           <span class="engage-multiplier">(×${multiplier})</span>
@@ -43,12 +57,20 @@ export class StargateContest {
         </div>
       </form>
       <style>
-        .engage-card-list { max-height: 300px; overflow-y: auto; margin-bottom: 10px; }
+        .engage-card-list { max-height: 200px; overflow-y: auto; margin-bottom: 6px; }
         .engage-card-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; border-bottom: 1px solid #eee; }
         .engage-card-row label { flex: 1; cursor: pointer; }
         .card-type { color: #888; font-size: 0.85em; }
         .card-val { font-weight: bold; color: #444; }
-        .engage-total { padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 1.1em; }
+        .temp-section { margin: 4px 0; }
+        .temp-section-header { display: flex; align-items: center; justify-content: space-between; padding: 3px 4px; background: rgba(0,0,0,0.04); border-radius: 3px; font-size: 0.9em; font-weight: bold; }
+        .temp-section-header a { font-size: 1.2em; padding: 0 4px; color: #2b4a7a; }
+        .temp-row { display: flex; align-items: center; gap: 6px; padding: 2px 4px; }
+        .temp-row input[type="number"] { width: 52px; text-align: center; }
+        .temp-row input[type="text"] { flex: 1; }
+        .temp-row a { cursor: pointer; color: #999; font-size: 0.9em; }
+        .temp-row a:hover { color: #c00; }
+        .engage-total { padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 1.1em; margin-top: 6px; }
         .engage-multiplier { color: #666; font-size: 0.9em; }
       </style>
     `;
@@ -69,7 +91,15 @@ export class StargateContest {
                   value: parseInt(el.dataset.value)
                 });
               });
-              resolve({ selected, multiplier, actor });
+              const tempModifiers = [];
+              html.find(".temp-row").each((_, row) => {
+                const $row = $(row);
+                const sign  = parseInt($row.find(".temp-value").data("sign"));
+                const val   = (parseInt($row.find(".temp-value").val()) || 0) * sign;
+                const name  = $row.find(".temp-name").val().trim() || (sign > 0 ? "Bonus" : "Malus");
+                if (val !== 0) tempModifiers.push({ name, value: val });
+              });
+              resolve({ selected, multiplier, actor, tempModifiers });
             }
           },
           cancel: {
@@ -78,15 +108,38 @@ export class StargateContest {
           }
         },
         render: html => {
-          // Live total update
-          html.find(".card-checkbox").on("change", () => {
+          const recalc = () => {
             let raw = 0;
-            html.find(".card-checkbox:checked").each((_, el) => {
-              raw += parseInt(el.dataset.value);
+            html.find(".card-checkbox:checked").each((_, el) => { raw += parseInt(el.dataset.value); });
+            html.find(".temp-value").each((_, el) => {
+              raw += (parseInt(el.value) || 0) * parseInt(el.dataset.sign);
             });
-            const final = Math.floor(raw * multiplier);
             html.find("#engage-total").text(raw);
-            html.find("#engage-final").text(final);
+            html.find("#engage-final").text(Math.floor(raw * multiplier));
+          };
+
+          html.find(".card-checkbox").on("change", recalc);
+
+          const makeRow = (sign) => `
+            <div class="temp-row">
+              <input type="number" class="temp-value" data-sign="${sign}" value="1" min="1" />
+              <input type="text" class="temp-name" placeholder="${sign > 0 ? "Bonus name" : "Malus name"}" />
+              <a class="remove-temp">✕</a>
+            </div>`;
+
+          html.find("#add-bonus").on("click", () => {
+            html.find("#temp-bonus-list").append(makeRow(1));
+            html.on("input", ".temp-value", recalc);
+            recalc();
+          });
+          html.find("#add-malus").on("click", () => {
+            html.find("#temp-malus-list").append(makeRow(-1));
+            html.on("input", ".temp-value", recalc);
+            recalc();
+          });
+          html.on("click", ".remove-temp", function() {
+            $(this).closest(".temp-row").remove();
+            recalc();
           });
         }
       }, { width: 400 }).render(true);
@@ -96,20 +149,23 @@ export class StargateContest {
   /**
    * Posts the action result to chat.
    */
-  static async postToChat(actor, selected, multiplier) {
-    if (!selected.length) {
+  static async postToChat(actor, selected, multiplier, tempModifiers = []) {
+    if (!selected.length && !tempModifiers.length) {
       ui.notifications.warn("No cards selected!");
       return;
     }
 
-console.log("Post to chat race multiplier:", multiplier);
-
-    const rawTotal = selected.reduce((sum, c) => sum + c.value, 0);
+    const rawTotal = selected.reduce((sum, c) => sum + c.value, 0)
+                   + tempModifiers.reduce((sum, m) => sum + m.value, 0);
     const finalTotal = Math.floor(rawTotal * multiplier);
     const race = actor.system.race.label;
 
     const cardDetails = selected.map(c =>
-      `<li>${c.name}: +${c.value}</li>`
+      `<li>${c.name}: ${c.value >= 0 ? "+" : ""}${c.value}</li>`
+    ).join("");
+
+    const tempDetails = tempModifiers.map(m =>
+      `<li><em>${m.name}: ${m.value >= 0 ? "+" : ""}${m.value}</em></li>`
     ).join("");
 
     const multiplierLine = `<div class="engage-detail">Race multiplier (${race}): ×${multiplier}</div>`;
@@ -124,7 +180,7 @@ console.log("Post to chat race multiplier:", multiplier);
         </div>
         <details class="chat-action-details">
           <summary>Details</summary>
-          <ul>${cardDetails}</ul>
+          <ul>${cardDetails}${tempDetails}</ul>
           ${multiplierLine}
           <div class="engage-detail">Raw total: ${rawTotal}</div>
         </details>

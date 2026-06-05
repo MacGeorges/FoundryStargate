@@ -102,7 +102,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
   static async engageAction() {
     const result = await StargateContest.engageAction(this.actor);
     if (result) {
-      await StargateContest.postToChat(result.actor, result.selected, result.multiplier);
+      await StargateContest.postToChat(result.actor, result.selected, result.multiplier, result.tempModifiers);
     }
   }
 
