@@ -20,6 +20,7 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       editCard: StargateActorSheet.editCard,
       deleteCard: StargateActorSheet.deleteCard,
       toggleLock: StargateActorSheet.toggleLock,
+      rollExpected: StargateActorSheet.rollExpected,
     }
   };
 
@@ -93,6 +94,10 @@ export class StargateActorSheet extends HandlebarsApplicationMixin(foundry.appli
       await this.actor.update({ "system.race.id": Number(event.target.value) });
   }
 
+
+  static async rollExpected() {
+    await StargateContest.rollUnexpected(this.actor.id, this.actor.system.race.label);
+  }
 
   static async engageAction() {
     const result = await StargateContest.engageAction(this.actor);
